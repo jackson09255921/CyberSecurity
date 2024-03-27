@@ -45,6 +45,11 @@
         bottom: 0;
         width: 100%;
     }
+    .login-info {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+    }
 </style>
 </head>
 <body>
@@ -54,7 +59,7 @@
 </header>
 
 <nav>
-    <a href="#login">Login</a>
+    <a href="#login" onclick="showLoginForm()">Login</a>
     <a href="#about">About Me</a>
     <!-- Add more navigation links as needed -->
 </nav>
@@ -67,19 +72,19 @@
         <!-- Add more information about yourself as needed -->
     </div>
 
-
-    <h2>Login</h2>
-    <p>Enter your account and password</p>
-    
-    <div id="loginForm">
-        <form>
-            <input type="text" placeholder="Username" required><br><br>
-            <input type="password" placeholder="Password" required><br><br>
+    <div>
+        <h2>Login</h2>
+        <p>Enter your account and password</p>
+        <form onsubmit="return saveLoginInfo()">
+            <input type="text" id="username" placeholder="Username" required><br><br>
+            <input type="password" id="password" placeholder="Password" required><br><br>
             <button type="submit">Login</button>
         </form>
     </div>
-    <div></div>
-    <div></div>
+
+    <div id="loginInfoContainer">
+        <!-- Login information will be displayed here -->
+    </div>
 </div>
 
 <footer>
@@ -87,14 +92,36 @@
 </footer>
 
 <script>
+    var loginInfoArray = []; // Array to store login information
+    
     function showLoginForm() {
         document.getElementById("loginForm").style.display = "block";
-        document.getElementById("socialLogin").style.display = "none";
     }
     
-    function showSocialLogin() {
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("socialLogin").style.display = "block";
+    function saveLoginInfo() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        
+        // Check if username already exists
+        if (loginInfoArray.indexOf(username) === -1) {
+            // If username does not exist, add it to array and display login info
+            loginInfoArray.push(username);
+            displayLoginInfo(username, password);
+        }
+        
+        // Clear form fields
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        
+        return false; // Prevent form submission
+    }
+    
+    function displayLoginInfo(username, password) {
+        var loginInfoContainer = document.getElementById("loginInfoContainer");
+        var loginInfoDiv = document.createElement("div");
+        loginInfoDiv.classList.add("login-info");
+        loginInfoDiv.innerHTML = "<p><strong>Username:</strong> " + username + "</p><p><strong>Password:</strong> " + password + "</p>";
+        loginInfoContainer.appendChild(loginInfoDiv);
     }
 </script>
 
